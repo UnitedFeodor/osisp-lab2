@@ -74,7 +74,7 @@ int findFilesRec(char *dirSource, char *dirSearch, FILE *file){
         if  (curFile->d_type != DT_DIR) {
             struct LinkedList *equalFiles = getSameFiles(dirSource, curFile, dirSearch);
 
-            //get full info about two files
+         
             if (equalFiles != NULL) {
                 char *dirNewPath = getFullPath(dirSource, curFile);
 

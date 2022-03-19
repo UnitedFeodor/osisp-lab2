@@ -38,23 +38,16 @@ int main(int argc, char *argv[]) {
         fprintf(stderr,"error! could not open the file\n");
         
         return 1;
-    }
-
+    } 
     FILE *file= fdopen(fDest, "w");
-
-    char *dirSource, *dirSearch;
-
-    dirSource = argv[1];
-    dirSearch = argv[2];
-
-    if (findFilesRec(dirSource, dirSearch, file) != 0) {
-        fprintf(stderr,"error! something went wrong while searching n");  
+    if (findFilesRec(argv[1], argv[2], file) != 0) {
+        fprintf(stderr,"error! something went wrong while searching \n");    
     }
-
-
+    
     if (fclose(file) != 0) {
         
         fprintf(stderr,"error! could not close the file\n");
+        return 1;
     }
 
     return 0;
@@ -81,6 +74,7 @@ int findFilesRec(char *dirSource, char *dirSearch, FILE *file){
         if  (curFile->d_type != DT_DIR) {
             struct LinkedList *equalFiles = getSameFiles(dirSource, curFile, dirSearch);
 
+            //get full info about two files
             if (equalFiles != NULL) {
                 char *dirNewPath = getFullPath(dirSource, curFile);
 
@@ -227,8 +221,20 @@ int filesAreEqual(const char *fn1, const char *fn2) {
         }
 
     }
-    fclose(file1);
-    fclose(file2);
+    
+    if (fclose(file1) != 0) {
+        
+        fprintf(stderr,"error! could not close the file\n");
+        return NULL;
+    }
+    if (fclose(file2) != 0) {
+        
+        fprintf(stderr,"error! could not close the file\n");
+        return NULL;
+    }
+
+    //fclose(file1);
+    //fclose(file2);
 
     return res;
 }
